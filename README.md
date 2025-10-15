@@ -38,4 +38,4 @@ Privacy and data
 - Your favorites and ratings are stored only in your browser (on this device).
 
 Questions?
-If a recipe doesn’t look right or you need ideas for substitutions, try adding/removing an ingredient or adjusting filters—more options will appear. Enjoy cooking and reducing food waste!
+If a recipe doesn’t look right or you need ideas for substitutions, try adding/removing an ingredient or adjusting filters, more options will appear. Enjoy cooking and reducing food waste!
