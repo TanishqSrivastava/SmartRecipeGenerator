@@ -35,7 +35,7 @@ export function toggleFavorite(recipeId: string): boolean {
 	return Boolean(favs[recipeId]);
 }
 
-export function suggestedRecipeIds(preferredDietary: string[] = []): string[] {
+export function suggestedRecipeIds(_preferredDietary: string[] = []): string[] {
 	// Simple heuristic: top-rated first; if tie, favorites, then dietary inclusion
 	const ratings = getRatings();
 	const favs = getFavorites();

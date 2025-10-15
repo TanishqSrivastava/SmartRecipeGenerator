@@ -1,14 +1,14 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
-import { matchRecipes, suggestSubstitutionsForMissing, type MatchFilters, RECIPES } from "@/lib/recipes";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { matchRecipes, suggestSubstitutionsForMissing, type MatchFilters, RECIPES, type DietaryTag, type Recipe } from "@/lib/recipes";
 import { detectIngredientsFromImage } from "@/lib/vision";
 import { getFavorites, getRatings, setRating, toggleFavorite, suggestedRecipeIds } from "@/lib/user-data";
 
 export default function Home() {
   const [ingredients, setIngredients] = useState<string[]>([]);
-  const [dietary, setDietary] = useState<string[]>([]);
-  const [difficulty, setDifficulty] = useState<string[]>([]);
+  const [dietary, setDietary] = useState<DietaryTag[]>([]);
+  const [difficulty, setDifficulty] = useState<Recipe['difficulty'][]>([]);
   const [maxTime, setMaxTime] = useState<number | undefined>();
   const [servings, setServings] = useState<number>(2);
   const [loading, setLoading] = useState(false);
@@ -20,8 +20,8 @@ export default function Home() {
 
   const filters: MatchFilters = useMemo(() => ({
     maxCookingTimeMinutes: maxTime,
-    difficulty: difficulty as any,
-    dietary: dietary as any,
+    difficulty,
+    dietary,
   }), [maxTime, difficulty, dietary]);
 
   async function onClassifyFromImage(file: File) {
@@ -30,8 +30,9 @@ export default function Home() {
     try {
       const detected = await detectIngredientsFromImage(file);
       setIngredients((prev) => Array.from(new Set([...prev, ...detected])));
-    } catch (e: any) {
-      setError(e?.message || "Failed to analyze image");
+    } catch (e: unknown) {
+      const message = e instanceof Error ? e.message : "Failed to analyze image";
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -43,7 +44,7 @@ export default function Home() {
     try {
       const res = matchRecipes({ availableIngredients: ingredients, filters, servings });
       setResults(res);
-    } catch (e: any) {
+    } catch (_e: unknown) {
       setError("Failed to match recipes");
     } finally {
       setLoading(false);
@@ -56,7 +57,7 @@ export default function Home() {
   }
 
   function onToggleFavorite(id: string) {
-    const nowFav = toggleFavorite(id);
+    toggleFavorite(id);
     setFavorites(getFavorites());
   }
 
@@ -66,8 +67,7 @@ export default function Home() {
   }
 
   // Hydrate ratings/favorites on first client render
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useMemo(() => { if (typeof window !== 'undefined') initUserData(); }, []);
+  useEffect(() => { if (typeof window !== 'undefined') initUserData(); }, []);
 
   function onAddIngredient(i: string) {
     const v = i.trim().toLowerCase();
@@ -129,7 +129,7 @@ export default function Home() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
             <label className="block text-sm mb-1">Dietary</label>
-            <select multiple className="w-full border rounded px-3 py-2" value={dietary} onChange={(e) => setDietary(Array.from(e.target.selectedOptions).map(o => o.value))}>
+            <select multiple className="w-full border rounded px-3 py-2" value={dietary} onChange={(e) => setDietary(Array.from(e.target.selectedOptions).map(o => o.value as DietaryTag))}>
               <option value="vegetarian">Vegetarian</option>
               <option value="vegan">Vegan</option>
               <option value="gluten_free">Gluten Free</option>
@@ -142,7 +142,7 @@ export default function Home() {
           </div>
           <div>
             <label className="block text-sm mb-1">Difficulty</label>
-            <select multiple className="w-full border rounded px-3 py-2" value={difficulty} onChange={(e) => setDifficulty(Array.from(e.target.selectedOptions).map(o => o.value))}>
+            <select multiple className="w-full border rounded px-3 py-2" value={difficulty} onChange={(e) => setDifficulty(Array.from(e.target.selectedOptions).map(o => o.value as Recipe['difficulty']))}>
               <option value="easy">Easy</option>
               <option value="medium">Medium</option>
               <option value="hard">Hard</option>
@@ -220,7 +220,7 @@ export default function Home() {
           ))}
         </div>
         {(() => {
-          const suggestedIds = suggestedRecipeIds(dietary);
+          const suggestedIds = suggestedRecipeIds();
           const suggested = suggestedIds.map((id) => RECIPES.find(r => r.id === id)).filter(Boolean) as typeof RECIPES;
           if (suggested.length === 0) return null;
           return (

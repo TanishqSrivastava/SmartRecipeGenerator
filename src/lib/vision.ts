@@ -1,7 +1,8 @@
 // Lightweight image-to-ingredient labeling using @xenova/transformers in the browser.
 // The model is downloaded on first use and cached in memory.
 
-let classifier: any | null = null;
+// Using 'unknown' to avoid 'any' and narrowing at call sites
+let classifier: ((image: string, options?: { topk?: number }) => Promise<{ label: string; score: number }[]>) | null = null;
 
 type Classification = { label: string; score: number };
 
@@ -61,12 +62,13 @@ function mapLabelToIngredient(label: string): string | null {
 export async function detectIngredientsFromImage(file: File): Promise<string[]> {
 	if (typeof window === 'undefined') return [];
 	if (!classifier) {
-		const { pipeline } = await import('@xenova/transformers');
-		classifier = await pipeline('image-classification', 'Xenova/convnext-tiny-224');
+        const { pipeline } = await import('@xenova/transformers');
+        const fn = await pipeline('image-classification', 'Xenova/convnext-tiny-224');
+        classifier = fn as typeof classifier;
 	}
 	const image = URL.createObjectURL(file);
 	try {
-		const results: Classification[] = await classifier(image, { topk: 5 });
+        const results: Classification[] = await (classifier as NonNullable<typeof classifier>)(image, { topk: 5 });
 		const mapped = results
 			.filter((r) => r.score >= 0.15)
 			.map((r) => mapLabelToIngredient(r.label))
