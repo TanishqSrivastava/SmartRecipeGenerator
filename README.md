@@ -20,6 +20,10 @@ Getting Started
 Deployment (Vercel)
 - Push to GitHub, then import in Vercel and deploy. Default settings work.
 
+Deploy now
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FTanishqSrivastava%2FSmartRecipeGenerator)
+
 Approach (≤200 words)
 This app centers on a typed recipe dataset and a deterministic matching algorithm. User-provided ingredients (typed or detected from images) are normalized and compared against each recipe’s required ingredients. Matches consider optional items and built-in substitutions, producing a score to rank results. Serving-size scaling proportionally adjusts ingredient amounts and nutrition. Dietary/time/difficulty filters prune candidates pre-match.
 
