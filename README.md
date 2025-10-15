@@ -1,30 +1,41 @@
-Smart Recipe Generator – Next.js App
-====================================
+Smart Recipe Generator
+======================
 
-Features
-- Ingredient input (text) and on-device image recognition using `@xenova/transformers`
-- Recipe matching with substitutions and serving-size scaling
-- Filters: difficulty, time, dietary tags
-- Nutrition info per recipe
-- Ratings and favorites (persisted in `localStorage`) and simple suggestions
-- Mobile-responsive UI, loading and error states
+What is this?
+Smart Recipe Generator helps you discover recipes from ingredients you already have. Type your ingredients or upload a photo of them, and the app suggests suitable recipes with steps and nutrition. You can filter by time and difficulty, set dietary preferences (like vegetarian or gluten‑free), change serving sizes, and save or rate your favorites.
 
-Tech
-- Next.js App Router (TypeScript)
-- On-device vision via `@xenova/transformers` (no server key required)
+Who is it for?
+- Home cooks looking to reduce food waste by using what’s on hand
+- Beginners who want clear steps and simple filters
+- Health‑minded users who appreciate quick nutrition estimates
 
-Getting Started
-1. Install: `npm i`
-2. Dev: `npm run dev` and open `http://localhost:3000`
+Key things you can do
+- Add ingredients in two ways:
+  - Type them in (e.g., “tomato, rice, chicken”).
+  - Upload a photo of your ingredients; the app recognizes common items.
+- Apply filters to match your needs:
+  - Dietary: vegetarian, vegan, gluten‑free, etc.
+  - Cooking time: choose a maximum time.
+  - Difficulty: easy, medium, or hard.
+- Adjust serving size and see ingredient amounts and nutrition scale automatically.
+- Browse multiple recipe options ranked by how well they match your ingredients.
+- See missing items and suggested substitutions to help you improvise.
+- Save recipes as favorites and rate them (your choices improve suggestions over time).
 
-Deployment (Vercel)
-- Push to GitHub, then import in Vercel and deploy. Default settings work.
+What you’ll see in a recipe
+- Title, cuisine, difficulty, time, and servings
+- Ingredient list (with optional items and possible substitutions)
+- Step‑by‑step instructions
+- Nutrition snapshot (calories, protein, carbs, fat)
 
-Deploy now
+Tips for best results
+- Include staple items you have (e.g., “rice, onion, tomato, eggs”).
+- If recognition from a photo misses something, add it manually.
+- Use substitutions when you’re missing one ingredient—great for quick swaps.
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FTanishqSrivastava%2FSmartRecipeGenerator)
+Privacy and data
+- Image recognition runs in your browser; photos are not uploaded to a server for analysis.
+- Your favorites and ratings are stored only in your browser (on this device).
 
-Approach (≤200 words)
-This app centers on a typed recipe dataset and a deterministic matching algorithm. User-provided ingredients (typed or detected from images) are normalized and compared against each recipe’s required ingredients. Matches consider optional items and built-in substitutions, producing a score to rank results. Serving-size scaling proportionally adjusts ingredient amounts and nutrition. Dietary/time/difficulty filters prune candidates pre-match.
-
-For vision, a lightweight ConvNeXt image-classification pipeline runs entirely in the browser via `@xenova/transformers`, mapping labels to common pantry ingredients with alias heuristics. Ratings and favorites persist in `localStorage`; suggestions rank recipes by user rating and favorite bias. The UI provides clear loading and error states, with responsive layout and minimal dependencies.
+Questions?
+If a recipe doesn’t look right or you need ideas for substitutions, try adding/removing an ingredient or adjusting filters—more options will appear. Enjoy cooking and reducing food waste!
