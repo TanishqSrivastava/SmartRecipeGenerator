@@ -27,6 +27,7 @@ Key things you can do
 - Browse multiple recipe options ranked by how well they match your ingredients.
 - See missing items and suggested substitutions to help you improvise.
 - Save recipes as favorites and rate them (your choices improve suggestions over time).
+- (For testing, you can use filters Vegetarian and Easy with ingredients tomato and/or rice and some recipes will show up)
 
 What you’ll see in a recipe
 - Title, cuisine, difficulty, time, and servings
