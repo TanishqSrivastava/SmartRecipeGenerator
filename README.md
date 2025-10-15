@@ -1,6 +1,12 @@
 Smart Recipe Generator
 ======================
 
+
+
+DEPLOYED VERCEL LINK: https://smartre-seven.vercel.app/
+
+
+
 What is this?
 Smart Recipe Generator helps you discover recipes from ingredients you already have. Type your ingredients or upload a photo of them, and the app suggests suitable recipes with steps and nutrition. You can filter by time and difficulty, set dietary preferences (like vegetarian or gluten‑free), change serving sizes, and save or rate your favorites.
 
